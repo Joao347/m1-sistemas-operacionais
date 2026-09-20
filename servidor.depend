@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1789934697 source:c:\users\joão\downloads\sistema operacionais\so_m1\servidor.cpp
+	<windows.h>
+	<stdio.h>
+	<string.h>
+	"memoria.h"
+
+1789934697 c:\users\joão\downloads\sistema operacionais\so_m1\memoria.h
+	"registro.h"
+
+1789934697 c:\users\joão\downloads\sistema operacionais\so_m1\registro.h
+
