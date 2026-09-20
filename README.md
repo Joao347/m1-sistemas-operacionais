@@ -1,29 +1,26 @@
-# M1 - Cliente/Servidor (versao simples, Windows/Code::Blocks)
+# m1-sistemas-operacionais
+projeto da matéria sistemas operacionais, que aborda conceitos como IPC, threads, concorrência e paralelismo na linguagem c++
 
-Dois programas separados (servidor.exe e cliente.exe) que conversam por
-memoria compartilhada do Windows. O servidor tem 3 threads que ficam
-olhando se chegou pedido; quando chega, uma delas pega, mexe na "tabela"
-(vetor + bancoTXT.txt) usando um mutex, e devolve a resposta.
+# como funciona?
+dois programas separados que conversam por memoria compartilhada do Windows. O servidor tem 3 threads que ficam
+olhando se chegou pedido; quando chega, uma delas pega, mexe na "tabela" usando um mutex, e devolve a resposta.
 
-## Arquivos
+## arquivos do porjeto
 
-- `registro.h` - o struct do registro (id + nome)
-- `memoria.h` - o struct que fica na memoria compartilhada (pedidos)
-- `servidor.cpp` - cria a memoria compartilhada, o mutex e as threads
-- `cliente.cpp` - manda pedidos (INSERT/SELECT/UPDATE/DELETE)
+- `registro.h`
+- `memoria.h`
+- `servidor.cpp`
+- `cliente.cpp`
 
-## Como rodar
+## como rodar
 
-1. Abra `m1.workspace` no Code::Blocks (abre os dois projetos juntos).
-2. Compile e rode o projeto **servidor** primeiro (Ctrl+F9, Ctrl+F10).
-3. Com o servidor rodando, compile e rode o **cliente** em outra janela.
-4. Usa o menu do cliente pra fazer INSERT/SELECT/UPDATE/DELETE.
+o projeto foi feito na IDE CodeBlocks, então primeiro abra o arquivo `m1.workspace`
 
-Da pra rodar o cliente.exe varias vezes ao mesmo tempo (abrindo ele de
-novo, ou usando `cliente.exe INSERT 1 Joao` pelo cmd) pra ver as threads
-do servidor atendendo mais de um pedido.
+1. abra `m1.workspace` no Code::Blocks.
+2. compile e rode o projeto **servidor** primeiro.
+3. com o servidor rodando, compile e rode o **cliente** em outra janela (se possível, vá até a paste /bin/Debug/cliente.exe).
+4. use o menu do cliente pra fazer INSERT/SELECT/UPDATE/DELETE.
 
-`teste_concorrencia.bat` faz isso automatico (depois de compilar os dois
-projetos pelo menos uma vez).
+da pra rodar o cliente.exe varias vezes ao mesmo tempo  pra ver as threads do servidor atendendo mais de um pedido.
 
-Pra fechar o servidor eh so fechar a janela dele.
+pra fechar o servidor é so fechar a janela dele.
