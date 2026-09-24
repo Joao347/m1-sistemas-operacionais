@@ -1,4 +1,4 @@
-// servidor: cria a memoria compartilhada e fica com threads esperando pedido
+//arquivo servidor: cria a memoria compartilhada e fica com threads esperando pedido
 #include <windows.h>
 #include <stdio.h>
 #include <string.h>
@@ -7,13 +7,13 @@
 #define NUM_THREADS 3
 #define MAX_REGISTROS 100
 
-Registro tabela[MAX_REGISTROS]; // "banco de dados" fica so na memoria do servidor
+Registro tabela[MAX_REGISTROS]; //o bd fica so na memoria do servidor
 int totalRegistros = 0;
 
-HANDLE hMutex; // protege a memoria compartilhada e a tabela
+HANDLE hMutex; //protege a memoria compartilhada e a tabela
 Memoria *mem;
 
-// le o arquivo texto pra dentro do vetor tabela
+//le o arquivo texto pra dentro do vetor tabela
 void carregarTabela() {
     FILE *f = fopen("bancoTXT.txt", "r");
     if (f == NULL) return;
@@ -23,7 +23,7 @@ void carregarTabela() {
     fclose(f);
 }
 
-// grava o vetor tabela inteiro no arquivo texto
+//grava o vetor tabela inteiro no arquivo texto
 void salvarTabela() {
     FILE *f = fopen("bancoTXT.txt", "w");
     for (int i = 0; i < totalRegistros; i++) {
@@ -32,7 +32,7 @@ void salvarTabela() {
     fclose(f);
 }
 
-// acha a posicao de um id na tabela, ou -1 se nao achar
+//acha a posicao de um id na tabela, ou -1 se nao achar
 int acharId(int id) {
     for (int i = 0; i < totalRegistros; i++) {
         if (tabela[i].id == id) return i;
@@ -40,7 +40,7 @@ int acharId(int id) {
     return -1;
 }
 
-// faz a operacao pedida (INSERT/SELECT/UPDATE/DELETE) em cima da tabela
+//faz a operacao pedida em cima da tabela
 void processarPedido(Pedido *p) {
     int pos = acharId(p->id);
 
@@ -93,7 +93,7 @@ void processarPedido(Pedido *p) {
     }
 }
 
-// funcao que cada thread do pool fica rodando
+//funcao que cada thread do pool fica rodando
 DWORD WINAPI threadServidor(LPVOID numero) {
     int meuNumero = (int)(long long) numero;
 
@@ -120,24 +120,24 @@ int main() {
 
     carregarTabela();
 
-    // cria a memoria compartilhada (isso aqui eh o IPC)
+    //cria a memoria compartilhada (IPC)
     HANDLE hMapa = CreateFileMappingA(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, sizeof(Memoria), NOME_MEMORIA);
     mem = (Memoria*) MapViewOfFile(hMapa, FILE_MAP_ALL_ACCESS, 0, 0, sizeof(Memoria));
     memset(mem, 0, sizeof(Memoria));
 
-    // cria o mutex que protege a memoria compartilhada e a tabela
+    //cria o mutex que protege a memoria compartilhada e a tabela
     hMutex = CreateMutexA(NULL, FALSE, NOME_MUTEX);
 
-    // cria as threads do pool
+    //cria as threads do pool
     for (int i = 0; i < NUM_THREADS; i++) {
-        CreateThread(NULL, 0, threadServidor, (LPVOID)(long long)(i + 1), 0, NULL);
+        CreateThread(NULL, 0, threadServidor, (LPVOID)(long long)(i + 1), 0, NULL); //createthread seria equivalente a phtreadcreate
     }
 
     printf("servidor pronto, %d threads esperando pedidos\n", NUM_THREADS);
     printf("nao feche essa janela enquanto estiver usando o cliente\n");
 
     while (1) {
-        Sleep(1000); // so segura o programa aberto, quem trabalha sao as threads
+        Sleep(1000); //so segura o programa aberto, quem trabalha sao as threads
     }
 
     return 0;
