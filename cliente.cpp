@@ -1,5 +1,5 @@
-// cliente: manda pedidos pro servidor usando a memoria compartilhada
-#include <windows.h>
+//arquivo cliente: manda os pedidos pro servidor usando a memoria compartilhada
+#include <windows.h> //biblioteca "windows.h" equivalente ao pthreads, só que para usar no windows
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -9,11 +9,11 @@
 HANDLE hMutex;
 Memoria *mem;
 
-// procura um slot livre, escreve o pedido, e espera a resposta chegar
+//procura um slot livre, escreve o pedido, e espera a resposta chegar
 void enviarPedido(const char *operacao, int id, const char *nome, int *sucesso, char *resposta) {
     int idx = -1;
 
-    // procura um slot livre pra colocar o pedido
+    //procura um slot livre pra colocar o pedido
     while (idx == -1) {
         WaitForSingleObject(hMutex, INFINITE);
         for (int i = 0; i < MAX_PEDIDOS; i++) {
@@ -31,7 +31,7 @@ void enviarPedido(const char *operacao, int id, const char *nome, int *sucesso, 
         if (idx == -1) Sleep(50); // todos os slots ocupados, tenta de novo
     }
 
-    // espera o servidor responder
+    //espera o servidor responder
     while (1) {
         WaitForSingleObject(hMutex, INFINITE);
         if (mem->pedidos[idx].pronto == 1) {
@@ -47,7 +47,7 @@ void enviarPedido(const char *operacao, int id, const char *nome, int *sucesso, 
 }
 
 int main(int argc, char *argv[]) {
-    // tenta abrir a memoria compartilhada que o servidor criou
+    //tenta abrir a memoria compartilhada que o servidor criou
     HANDLE hMapa = NULL;
     for (int tentativa = 0; tentativa < 40; tentativa++) {
         hMapa = OpenFileMappingA(FILE_MAP_ALL_ACCESS, FALSE, NOME_MEMORIA);
@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
         Sleep(250);
     }
     if (hMapa == NULL) {
-        printf("sevidor n�o localizado");
+        printf("sevidor não localizado");
         return 1;
     }
 
@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
     int sucesso;
     char resposta[TAM_MSG];
 
-    // se rodar com argumentos: cliente.exe INSERT 1 Joao (bom pra testar varios ao mesmo tempo)
+    //se rodar com argumentos: cliente.exe INSERT 1 Joao
     if (argc >= 3) {
         char op[TAM_OP];
         strcpy(op, argv[1]);
@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    // menu normal
+    //menu normal
     int opcao;
     do {
         printf("\n1-INSERT  2-SELECT  3-UPDATE  4-DELETE  0-Sair\n");
