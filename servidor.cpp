@@ -17,7 +17,7 @@ Memoria *mem;
 void carregarTabela() {
     FILE *f = fopen("bancoTXT.txt", "r");
     if (f == NULL) return;
-    while (fscanf(f, "%d;%49[^\n]\n", &tabela[totalRegistros].id, tabela[totalRegistros].nome) == 2) {
+    while (totalRegistros < MAX_REGISTROS && fscanf(f, "%d;%49[^\n]\n", &tabela[totalRegistros].id, tabela[totalRegistros].nome) == 2) {
         totalRegistros++;
     }
     fclose(f);
@@ -48,6 +48,9 @@ void processarPedido(Pedido *p) {
         if (pos != -1) {
             p->sucesso = 0;
             sprintf(p->resposta, "id %d ja existe", p->id);
+        } else if totalRegistros >= MAX_REGISTROS) { //aqui estava estourando o limite do banco
+            p->sucesso = 0;
+            sprintf(p->resposta, "banco cheio", MAX_REGISTROS);
         } else {
             tabela[totalRegistros].id = p->id;
             strcpy(tabela[totalRegistros].nome, p->nome);
