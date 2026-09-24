@@ -26,8 +26,7 @@ DWORD inicio;                 // instante em que o servidor subiu, pra mostrar o
 void carregarTabela() {
     FILE *f = fopen("bancoTXT.txt", "r");
     if (f == NULL) return;
-    while (totalRegistros < MAX_REGISTROS &&
-           fscanf(f, "%d;%49[^\n]\n", &tabela[totalRegistros].id, tabela[totalRegistros].nome) == 2) {
+    while (totalRegistros < MAX_REGISTROS && fscanf(f, "%d;%49[^\n]\n", &tabela[totalRegistros].id, tabela[totalRegistros].nome) == 2) {
         totalRegistros++;
     }
     fclose(f);

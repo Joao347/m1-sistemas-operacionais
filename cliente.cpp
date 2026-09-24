@@ -59,7 +59,7 @@ void enviarPedido(const char *operacao, int id, const char *nome, int *sucesso, 
     ReleaseSemaphore(hSemSlots, 1, NULL); // avisa que tem um slot livre de novo
 }
 
-// le um inteiro do teclado; se a pessoa digitar letra, descarta a linha em vez de entrar em loop
+//comando pra poder só digitar inteiros
 int lerInteiro(const char *mensagem, int *valor) {
     printf("%s", mensagem);
     if (scanf("%d", valor) == 1) return 1;
@@ -71,7 +71,7 @@ int lerInteiro(const char *mensagem, int *valor) {
 }
 
 int main(int argc, char *argv[]) {
-    // tenta abrir a memoria compartilhada que o servidor criou
+    //tenta abrir a memoria compartilhada que o servidor criou
     HANDLE hMapa = NULL;
     for (int tentativa = 0; tentativa < 40; tentativa++) {
         hMapa = OpenFileMappingA(FILE_MAP_ALL_ACCESS, FALSE, NOME_MEMORIA);
@@ -105,7 +105,6 @@ int main(int argc, char *argv[]) {
     int sucesso;
     char resposta[TAM_MSG];
 
-    // se rodar com argumentos: cliente.exe INSERT 1 Joao (bom pra testar varios ao mesmo tempo)
     if (argc >= 3) {
         char op[TAM_OP];
         snprintf(op, TAM_OP, "%s", argv[1]);
@@ -119,7 +118,7 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    // menu normal
+    //menu normal
     int opcao;
     do {
         printf("\n1-INSERT  2-SELECT  3-UPDATE  4-DELETE  0-Sair\n");
@@ -136,7 +135,7 @@ int main(int argc, char *argv[]) {
         if (!lerInteiro("id: ", &id)) continue;
 
         if (opcao == 1) {
-            printf("nome: "); scanf("%49s", nome); // %49s: nunca passa do tamanho do vetor
+            printf("nome: "); scanf("%49s", nome); //como definimos o numero max pra 50, o %49s serve pra n deixar passar de 49
             enviarPedido("INSERT", id, nome, &sucesso, resposta);
         } else if (opcao == 2) {
             enviarPedido("SELECT", id, nome, &sucesso, resposta);
