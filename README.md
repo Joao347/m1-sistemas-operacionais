@@ -1,11 +1,11 @@
 # m1-sistemas-operacionais
-projeto da matéria sistemas operacionais, que aborda conceitos como IPC, threads, concorrência e paralelismo na linguagem c++
+trabalho da matéria sistemas operacionais, que aborda conceitos como IPC, threads, concorrência e paralelismo na linguagem c++
 
 # como funciona?
 dois programas separados que conversam por memoria compartilhada do Windows. O servidor tem 3 threads que ficam
 olhando se chegou pedido; quando chega, uma delas pega, mexe na "tabela" usando um mutex, e devolve a resposta.
 
-## arquivos do porjeto
+## arquivos do projeto
 
 - `registro.h`
 - `memoria.h`
